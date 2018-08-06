@@ -1,0 +1,685 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+  <head> 
+    <title>OpenLayers Basic Single WMS Example</title> 
+	<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+	<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+
+    <!-- style sheet for map -->
+    <link rel="stylesheet" href="openlayers/theme/default/style.css" type="text/css" /> 
+    <link rel="stylesheet" href="openlayers/theme/default/google.css" type="text/css" />     
+    <link rel="stylesheet" href="openlayers/examples/style.css" type="text/css" /> 
+	<!-- google maps source files --> 
+    <script src='http://maps.google.com/maps?file=api&v=2&key=ABQIAAAAnKulvxnb9_-nFVuS8fuTWhRTIUnG_T-jeQ5bRJoyv1xx4Q1iaRQFvWQ_u4PNJLspIy5-KemnTInoeg'></script> 
+    <!-- openlayers source files -->
+    <script src="openlayers/OpenLayers.js"></script> 
+    <script src="GeoRSS_Format.js"></script> 
+    <script src="GeoRSS_Layer.js"></script> 
+    <script src="wmc_v2.js"></script> 
+    <script src="ajax.js"></script> 
+
+    <script type="text/javascript"> 
+        var map=null, gphy=null, gmap=null, ghyb=null, gsat=null, gwms=null;
+        var clickHandler = null;
+        var clickFunc = null;
+        var markers = null;
+        function ActivateClickHandler(func)
+        {
+            clickFunc = func;
+            clickHandler.activate();
+        }
+        
+        function DeActivateClickHandler()
+        {
+            clickFunc = null;
+            clickHandler.deactivate();
+        }
+        
+        function ClearRecordMarkers()
+        {
+            if (markers)
+                map.removeLayer(markers);
+            markers = new OpenLayers.Layer.Markers( "Markers" );
+            map.addLayer(markers);
+        }
+        
+        function AddRecordMarker(x, y, id, func)
+        {
+            var size = new OpenLayers.Size(21, 25);
+            var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+            var icon = new OpenLayers.Icon('openlayers/img/marker-blue.png',size,offset);
+            var coord = new OpenLayers.LonLat(x, y);
+            
+            var marker = new OpenLayers.Marker(coord, icon)
+            marker.marker_id = id;
+            
+            marker.events.register('mousedown', marker, function(evt) { func(this.marker_id); OpenLayers.Event.stop(evt); });
+            markers.addMarker(marker);
+        }
+ 
+        
+        
+		var proj = 'EPSG:900913';
+		
+		// wmc format
+        var format = new OpenLayers.Format.WMC({'layerOptions': {buffer: 0}});
+
+		// read wmc document
+        function DoReadWMC(text) {
+        
+			// remove old layers            
+			while (map.layers.length > 0)
+				map.removeLayer(map.layers[0]);
+
+			// read contents						
+            map = format.read(text, {map: map});
+                
+			// find first visible layer
+            var baseLayer = null;
+            for (i=0; i<map.layers.length; i++)
+			{
+				if (baseLayer == null && map.layers[i].visible == true)
+					baseLayer = map.layers[i];
+			}
+
+			// set new base layer
+			if (baseLayer) {
+				map.setBaseLayer(baseLayer);
+			}
+				
+			// set bounds				
+			var bound = wmcContext.bounds;
+			map.zoomToExtent(bound);
+			map.zoomIn();
+			
+			parent.ReloadLayerGrid();
+			parent.PopWait();
+		}
+
+		// callback function for ajax call				
+        function OnReadWMCDone() {
+        
+			if (xmlhttp.readyState != 4)
+				return;
+				
+			if (xmlhttp.status != 200)
+				return;
+				
+			DoReadWMC(xmlhttp.responseText);
+        }
+
+        function ReadWMC(url) {
+			xmlhttp = CreateHTTPRequest();
+			if (xmlhttp == null)
+			{
+				alert("ERROR: Your browser does not support XMLHTTP.");
+				return "";
+			}
+			parent.PushWait();
+			xmlhttp.open("GET", url, true);
+			xmlhttp.onreadystatechange = OnReadWMCDone;
+			xmlhttp.send(null);
+		}
+        
+       
+        
+        function OnWriteWMCDone() {
+        
+            parent.MessageBox("WMC", xmlhttp.responseText);
+            
+            
+			if (xmlhttp.readyState != 4)
+				return;
+				
+			if (xmlhttp.status != 200)
+				return;
+				
+			
+        }
+        
+
+        function writeWMC(name) {
+            debugger;
+			var text = format.write(map, { version: 'SAEON' });
+			var code = escape(text);
+            LoadAjaxFunction("wmc_doc.asp", "MODE=WRITE&NAME=" + name + "&code=" + code, OnWriteWMCDone)
+		}
+
+
+		// start wait cursor		
+		function loadStartListener() {
+			if (parent && parent.PushWait)
+				parent.PushWait();
+		}
+
+		// end wait cursor
+		function loadEndListener(layer) {
+			if (parent && parent.PopWait) {
+    			parent.PopWait();
+    			map.updateSize();
+			}
+		}
+		
+		
+		// create ProWMS Layer		
+		function WMSUrlFunc(bounds) {
+			var bb = bounds;
+			
+			var imageSize = this.getImageSize(); 
+			var newParams = {
+				'SRS': "EPSG:4326",
+				'BBOX': this.encodeBBOX ?  bb.toBBOX() : bb.toArray(),
+				'WIDTH': imageSize.w,
+				'HEIGHT': imageSize.h
+			};
+			var requestString = this.getFullRequestString(newParams);
+			
+			return requestString;
+		}	
+
+		// create WMS Layer		
+		function CreateWMS(name, url, layers, transparent, visible, opacity, title, absdesc) {
+			var layer = new OpenLayers.Layer.WMS(
+				name,
+				url,
+				{
+					layers: layers,
+					exceptions: "application/vnd.ogc.se_xml",
+					transparent: transparent ? "TRUE" : "FALSE",
+					format: "image/png",
+					sphericalMercator: true
+				},
+				{
+					tileSize: new OpenLayers.Size(256, 256),
+					getURL: WMSUrlFunc,
+					buffer: 1,
+					sphericalMercator: true
+				}
+			);
+			layer.gridType = "WMS";
+			layer.visibility = visible;
+			layer.visible = visible;
+			layer.title = title;
+			layer.absdesc = absdesc;
+			
+		    if (opacity != null)
+		    {
+                layer.setOpacity(opacity);
+                layer.alpha = opacity;
+            }
+            else
+            {
+                layer.setOpacity(1);
+                layer.alpha = 1;
+            }
+            
+			
+            layer.events.register('loadstart', layer, loadStartListener);
+            layer.events.register('loadend', layer, loadEndListener);
+            return layer;
+		}
+
+		// create KML layer
+		function CreateKML(name, url, visible) {
+			layer = new OpenLayers.Layer.GML(name, url, 
+			{
+				format: OpenLayers.Format.KML, 
+				formatOptions: {
+				extractStyles: true, 
+				extractAttributes: true,
+				maxDepth: 2
+				}
+			});
+			
+			layer.gridType = "KML";
+			layer.visibility = visible;
+			layer.visible = visible;
+            layer.events.register('loadstart', layer, loadStartListener);
+            layer.events.register('loadend', layer, loadEndListener);
+			return layer;
+		}
+
+		// create google layer
+		function CreateGoogleLayer(name, visible) {
+			var type = null;
+			switch (name) 
+			{
+			case "Google Streets":
+				type = G_NORMAL_MAP;
+				break;
+			case "Google Physical":
+				type = G_PHYSICAL_MAP;
+				break;
+			case "Google Hybrid":
+				type = G_HYBRID_MAP;
+				break;
+			case "Google Satellite":
+				type = G_SATELLITE_MAP;
+				break;
+			}
+			
+			var layer =  new OpenLayers.Layer.Google(
+				name,
+				{
+					type: type,
+					sphericalMercator: false,
+					wmcName: name
+				}
+			);
+			layer.gridType = "Google";
+			layer.visibility = true;
+			layer.visible = visible;
+			
+            layer.events.register('loadstart', layer, loadStartListener);
+            layer.events.register('loadend', layer, loadEndListener);
+			return layer;
+		}
+		
+		function CreateVectorLayer(name, f) {
+            layer = new OpenLayers.Layer.Vector(name, 
+				{  } 
+            );
+
+			// transform geometry            
+            
+            // add geometry to layer
+            layer.addFeatures( [ f ]);
+            layer.gridType = "Vector";
+            
+            // whalala
+            return layer;
+		}
+		
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		// add leading zero's to number
+		// num: integer
+		// count: requiered minimum length of number
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		function zeroPad(num,count) {
+			var zpnum = num + '';
+			while(zpnum.length < count)
+				zpnum = "0" + zpnum;
+			return zpnum;
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		// converts coordinate from decimal degrees to dd.mm.sss        
+		// coord: float -  coordinate in decimal agrees
+		// dir: string - 'N' or 'E'
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		function decToDMS(coord, dir) {
+			if (coord < 0) {
+				coord = -coord;
+				dir = (dir == 'N') ? 'S' : 'W';
+			}
+			deg = Math.floor(coord);
+			min = (coord - deg) * 60.0;
+			temp = Math.floor(min);
+			sec = (min - temp) * 60.0;
+			dms = '' + zeroPad(deg, 2) + '°' + zeroPad(Math.floor(min), 2) + "'" + zeroPad(Math.floor(sec), 2) + '"' + dir;
+			return dms;
+		}
+		
+		function OnLoaded() {
+			
+			
+		}
+        
+		// set the coordinates on the status bar
+		function OnMouseMove(e) {
+			var lonlat = map.getLonLatFromViewPortPx(e.xy);
+			var lat = decToDMS(lonlat.lat, 'N');
+			var lng = decToDMS(lonlat.lon, 'E');
+			if (parent && parent.SetStatusCoords)
+				parent.SetStatusCoords(lat, lng);
+		}
+		
+		// set the coordinates on the status bar - used for initual coordinates before mouse move
+		function SetMapCenterCoords(clat, clng) {
+			var lat = decToDMS(clat, 'N');
+			var lng = decToDMS(clng, 'E');
+			if (parent && parent.SetStatusCoords)
+				parent.SetStatusCoords(lat, lng);
+		}		
+		
+		// add KML layer to map
+		function AddKML(name, url) {
+            layer = new OpenLayers.Layer.GML(name, url, 
+            {
+                format: OpenLayers.Format.KML, 
+                formatOptions: {
+                  extractStyles: true, 
+                  extractAttributes: true,
+                  maxDepth: 2
+                }
+            });
+            layer.gridType = "KML";
+            layer.events.register('loadstart', layer, loadStartListener);
+            layer.events.register('loadend', layer, loadEndListener);
+            map.addLayer(layer);
+            return layer;
+		}
+		
+		var arRSSLayers = new Array();
+		var zoomRecurse = false;
+		
+		
+		function OnMapMove() {
+		    if (zoomRecurse == false) {
+		        zoomRecurse = true;
+	            map.zoomIn();
+	            map.zoomOut();
+	            zoomRecurse = false;
+            }
+		}
+		
+		function AddRSS(name, url) {
+            layer = new OpenLayers.Layer.GeoRSSJDT(name, url, 
+            {
+            });
+            map.addLayer(layer);
+            arRSSLayers.push(layer);
+            map.events.register( 'moveend', this, OnMapMove);
+            
+            return layer;
+		}
+		
+		function AddVector(name, f) {
+		
+			// create
+            layer = CreateVectorLayer(name, f);
+            
+            // add layer to map
+            map.addLayer(layer);
+            
+            // whalala
+            return layer;
+		}
+		
+        function AddSOS(name, url) {
+            var layer = new OpenLayers.SOSClient({map: map, url: url });
+            layer.gridType = "Vector";
+            return layer;
+        }
+		
+		var newBaseLayer = null;
+		
+		
+		function AddWMS(name, url, name, transparent, title, absdesc) {
+			var layer = CreateWMS(name, url, name, transparent, true, null, title, absdesc);
+			map.addLayer(layer);
+			if (transparent == false) {
+				newBaseLayer = layer;
+				setTimeout('SetBaseLayer();', 2000);
+			}
+            return layer;
+		}
+		
+		function SetBaseLayer() {
+			map.setBaseLayer(newBaseLayer);
+		}
+        
+        function SetBackgroundMap(nMapID) {
+			var newMap = null;
+			switch (parseInt(nMapID)) {
+				case 1: newMap = gmap; break;
+				case 2: newMap = ghyb; break;
+				case 3: newMap = gwms; break;
+			}
+			map.setBaseLayer(newMap);
+		}
+		
+		function DoAddLayer(layer) {
+			layer.setVisibility(true);
+			map.addLayer(layer);
+		}
+		
+		function RemoveLayer(layer) {
+			map.removeLayer(layer);
+		}
+		
+		function ZoomToBBox(bbox) {
+			var box = new OpenLayers.Bounds(bbox.left+0, bbox.top+0, bbox.right+0, bbox.bottom+0);
+			map.zoomToExtent(box);
+		}
+
+		function DoSize() {
+			map.updateSize();
+		}	
+		
+		
+		function init() {
+		
+		    
+		
+		    
+		   
+			// set proxy
+			OpenLayers.ProxyHost="tear.asp?URL=";
+
+			// map options
+			var options = {
+				controls: [
+					new OpenLayers.Control.Navigation(),
+					new OpenLayers.Control.PanZoomBar(),
+					new OpenLayers.Control.LayerSwitcher()
+				]
+			};	       
+		   
+			// create map
+			map = new OpenLayers.Map('map', options );
+			
+			
+            OpenLayers.ProxyHost = "proxy.py?url=";
+            OpenLayers.Util.extend(OpenLayers.Lang.en,
+                {
+                    'SOSClientType': "Type",
+                    'SOSClientTime': "Date/time",
+                    'SOSClientLastvalue': "Last value"
+                }
+            );
+
+            // Example class on how to put all the OpenLayers SOS pieces together
+            OpenLayers.SOSClient = OpenLayers.Class({
+                url: null,
+                map: null,
+                capsformat: new OpenLayers.Format.SOSCapabilities(),
+                obsformat: new OpenLayers.Format.SOSGetObservation(),
+                initialize: function (options) {
+                    OpenLayers.Util.extend(this, options);
+                    var params = {'service': 'SOS', 'request': 'GetCapabilities'};
+                    var paramString = OpenLayers.Util.getParameterString(params);
+                    url = OpenLayers.Util.urlAppend(this.url, paramString);
+                    OpenLayers.Request.GET({url: url,
+                        success: this.parseSOSCaps, scope: this});
+                },
+                getFois: function() {
+                    var result = [];
+                    this.offeringCount = 0; 
+                    for (var name in this.SOSCapabilities.contents.offeringList) {
+                        var offering = this.SOSCapabilities.contents.offeringList[name];
+                        this.offeringCount++;
+                        for (var i=0, len=offering.featureOfInterestIds.length; i<len; i++) {
+                            var foi = offering.featureOfInterestIds[i];
+                            if (OpenLayers.Util.indexOf(result, foi) === -1) {
+                                result.push(foi);
+                            }
+                        }
+                    }
+                    return result;
+                },
+                parseSOSCaps: function(response) {
+                    // cache capabilities for future use
+                    this.SOSCapabilities = this.capsformat.read(response.responseXML || response.responseText);
+                    this.layer = new OpenLayers.Layer.Vector("Stations", {
+                        strategies: [new OpenLayers.Strategy.Fixed()],
+                        protocol: new OpenLayers.Protocol.SOS({
+                            url: this.url,
+                            fois: this.getFois()
+                        })
+                    });
+                    this.map.addLayer(this.layer);
+                    this.ctrl = new OpenLayers.Control.SelectFeature(this.layer,
+                        {scope: this, onSelect: this.onFeatureSelect});
+                    this.map.addControl(this.ctrl);
+                    this.ctrl.activate();
+                    parent.ReloadLayerGrid();
+                },
+                getTitleForObservedProperty: function(property) {
+                    for (var name in this.SOSCapabilities.contents.offeringList) {
+                        var offering = this.SOSCapabilities.contents.offeringList[name];
+                        if (offering.observedProperties[0] === property) {
+                            return offering.name;
+                        }
+                    }
+                },
+                showPopup: function(response) {
+                    this.count++;
+                    var output = this.obsformat.read(response.responseXML || response.responseText);
+                    if (output.measurements.length > 0) {
+                        this.html += '<tr>';
+                        this.html += '<td width="100">'+this.getTitleForObservedProperty(output.measurements[0].observedProperty)+'</td>';
+                        this.html += '<td>'+output.measurements[0].samplingTime.timeInstant.timePosition+'</td>';
+                        this.html += '<td>'+output.measurements[0].result.value + ' ' + output.measurements[0].result.uom + '</td>';
+                        this.html += '</tr>';
+                    }
+                    // check if we are done
+                    if (this.count === this.numRequests) {
+                        var html = '<table cellspacing="10"><tbody>';
+                        html += '<tr>';
+                        html += '<th><b>'+OpenLayers.i18n('SOSClientType')+'</b></th>';
+                        html += '<th><b>'+OpenLayers.i18n('SOSClientTime')+'</b></th>';
+                        html += '<th><b>'+OpenLayers.i18n('SOSClientLastvalue')+'</b></th>';
+                        html += '</tr>';
+                        html += this.html;
+                        html += '</tbody></table>';
+                        var popup = new OpenLayers.Popup.FramedCloud("sensor",
+                        this.feature.geometry.getBounds().getCenterLonLat(),
+                            null,
+                            html,
+                            null,
+                            true,
+                            function(e) {
+                                this.hide();
+                                OpenLayers.Event.stop(e);
+                                // unselect so popup can be shown again
+                                this.map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselectAll();
+                            } 
+                        );
+                        this.feature.popup = popup;
+                        this.map.addPopup(popup);
+                    }
+                },
+                onFeatureSelect: function(feature) {
+                    this.feature = feature;
+                    this.count = 0;
+                    this.html = '';
+                    this.numRequests = this.offeringCount;
+                    if (!this.responseFormat) {
+                        for (format in this.SOSCapabilities.operationsMetadata.GetObservation.parameters.responseFormat.allowedValues) {
+                            // look for a text/xml type of format
+                            if (format.indexOf('text/xml') >= 0) {
+                                this.responseFormat = format;
+                            }
+                        }
+                    }
+                    // do a GetObservation request to get the latest values
+                    for (var name in this.SOSCapabilities.contents.offeringList) {
+                        var offering = this.SOSCapabilities.contents.offeringList[name];
+                        var xml = this.obsformat.write({
+                            eventTime: 'latest',
+                            resultModel: 'om:Measurement',
+                            responseMode: 'inline',
+                            procedure: feature.attributes.id,
+                            offering: name,
+                            observedProperties: offering.observedProperties,
+                            responseFormat: this.responseFormat
+                        });
+                        OpenLayers.Request.POST({
+                            url: this.url,
+                            scope: this,
+                            failure: this.showPopup,
+                            success: this.showPopup,
+                            data: xml
+                        });
+                    }
+                },
+                destroy: function () {
+                },
+                CLASS_NAME: "OpenLayers.SOSClient"
+            });
+        
+			// scale line
+			clSL = new OpenLayers.Control.ScaleLine()
+			clSL.maxWidth = 200;
+			clSL.bottomOutUnits = "";
+			clSL.bottomInUnits = "";
+			map.addControl(clSL);
+			
+			var ovmap = new OpenLayers.Control.OverviewMap({
+				maxRatio: 16,
+				layers: [new OpenLayers.Layer.WMS("OpenLayers WMS",
+					"http://labs.metacarta.com/wms/vmap0",
+					{layers: 'basic'})]
+			});
+			map.addControl(ovmap);
+	
+		    
+			// custom events
+			map.events.register("mousemove", map, OnMouseMove);
+
+            // create google layers
+            gmap = CreateGoogleLayer("Google Streets", true);
+            gphy = CreateGoogleLayer("Google Physical", true);
+			ghyb = CreateGoogleLayer("Google Hybrid", true);
+			gsat = CreateGoogleLayer("Google Satellite", true);
+			
+			
+			// create modus layer
+			gwms = CreateWMS('MODIS', 'http://wms.lizardtech.com/lizardtech/iserv/ows', 'MODIS', false, true, null, 'Modis', '');
+				
+			// create gap layer
+			ggap = CreateWMS('GAP', 'http://localhost/gwms/wms.asp?MAP=GAP', '1.1 Mesoframe and source data layers', false, true, null, 'GAP', '');
+
+			// add layers to map			
+            map.addLayers([gwms, gmap, gphy, ghyb, gsat, ggap]);
+            map.setBaseLayer(gwms);
+
+            
+
+            clickHandler = new OpenLayers.Handler.Click(
+                { 'map': map },
+                {
+                    'click': function(evt) {
+                        //get ur coords
+                        var lonlat = map.getLonLatFromViewPortPx(evt.xy);
+                        //do what u want with them
+                        clickFunc(lonlat);
+                        //deactivate it
+                        clickHandler.deactivate();
+                    }
+                }
+            );
+            
+
+			// set map centre	
+			var clat = -28.468611;
+			var clng = 24.669167;
+			mc = new OpenLayers.LonLat(clng, clat);
+			map.moveTo(mc, 5, null);
+			SetMapCenterCoords(clat, clng);
+		}
+				
+		
+				
+    </script> 
+  </head> 
+  <body onload="init()" leftmargin=0 topmargin=0 rightmargin=0 bottommargin=0 onresize="DoSize();"> 
+	
+    <div id="map" class="smallmap" style="WIDTH:100%;HEIGHT:100%"  ></div> 
+    <pre style="DISPLAY: none; VISIBILITY: hidden" id="bounds"></pre>
+    <br />xxxxxxxxx
+
+  </body> 
+</html> 

@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <link rel="stylesheet" href="OpenLayers/theme/default/style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <title>WFS: Sample Campaign</title>
+    <script src="OpenLayers/OpenLayers.js"></script>
+    <script type="text/javascript">
+        var map, layer;
+
+        function init(){
+            OpenLayers.ProxyHost="tear.asp?URL=";
+            map = new OpenLayers.Map('map', {controls: [ new OpenLayers.Control.PanZoom(), new OpenLayers.Control.Permalink(), new OpenLayers.Control.MouseDefaults() ]} );
+            layer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+                    "http://labs.metacarta.com/wms-c/Basic.py",
+                    {layers: 'basic'} );
+            map.addLayer(layer);
+
+            layer = new OpenLayers.Layer.WFS( "Sample campaign WFS",
+                    "http://localhost/saeon/campaign_wfs.asp?CAMPAIGN=77" );
+            map.addLayer(layer);
+
+
+
+
+
+
+            map.zoomToExtent(new OpenLayers.Bounds(28.270483,-25.907274,28.312025,-25.87828));
+        }
+    </script>
+  </head>
+
+  <body onload="init()">
+<h1 id="title">WFS Sample Campaign Example</h1>
+
+<div id="tags">
+</div>
+
+<p id="shortdesc">
+    Shows the use of the WFS Sample Campaign
+</p>
+
+<div id="map" class="smallmap"></div>
+
+<div id="docs"></div>
+  </body>
+
+</html>
+
+
+
+</div>

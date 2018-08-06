@@ -1,0 +1,413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+		<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+		<script src="ajax.js"></script> 
+	</head>
+	<body>
+	
+        <!-------------------- Web map context -------------------------------->
+		<P>
+			<strong>Web map context</strong><br>
+			<table border=1 ID="Table3">
+			<tr>
+			<td>Select WMC:</td>
+			<td>
+			<SELECT ID="wmc_list" NAME="wmc_list" style="WIDTH:700">
+			</SELECT>
+			</td>
+			<tr>
+				<td>Show Control:</td>
+				<td>
+					<SELECT ID="wmc_control" NAME="wmc_control" style="WIDTH:100">
+					<OPTION value='show'>Show</OPTION>
+					<OPTION value='hide'>Hide</OPTION>
+					</SELECT>
+				</td>
+			</tr>
+			
+			</table>
+			<INPUT type="button" value="Open" ID="wmc_open" NAME="Button1" onclick="OnButtonWMC();">
+			<script language=javascript>
+			var url = 'wmc_list.asp';
+			LoadAjaxFunction(url, "", OnAjaxLoaded)
+    		function OnAjaxLoaded()
+			{
+    			if (xmlhttp.readyState != 4 || xmlhttp.status != 200)
+	    			return;
+	    	    var cmbBox = document.getElementById('wmc_list');
+	    		var xmlDoc = xmlhttp.responseXML.documentElement;
+	    		var xmlItem = xmlDoc.getElementsByTagName('Item');
+	    		for (i=0; i<xmlItem.length; i++)
+	    		{
+	    		    var xmlTitle = xmlItem[i].getElementsByTagName('Title')[0];
+	    		    var xmlName  = GetXMLText(xmlTitle);
+	    		    cmbBox.options.add(new Option(xmlName, xmlName));
+    	    	}
+			}
+			
+			function OnButtonWMC()
+			{
+				var url     = escape(document.getElementById('wmc_list').value);
+				var control = escape(document.getElementById('wmc_control').value);
+				var spawn = 'index.htm?MODE=OPEN_WMC&URL=' + url + '&SHOW_CONTROL=' + control;
+				window.open(spawn, 'DemoWMC');
+			}			
+			
+			</script>
+
+		</P>		
+	
+		<P>
+			<strong>WMS Example 1</strong><br>
+			<table border=1>
+			<tr>
+			<td>Title:</td>
+			<td><INPUT id="wms_title" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+			<td>URL:</td>
+			<td><INPUT id="wms_url" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Layer:</td>
+				<td><INPUT id="wms_layer" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Bounds:</td>
+				<td><INPUT id="wms_bounds" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Show Control:</td>
+				<td>
+					<SELECT ID="wms_control" NAME="Select1" style="WIDTH:100">
+					<OPTION value='show'>Show</OPTION>
+					<OPTION value='hide'>Hide</OPTION>
+					</SELECT>
+				</td>
+			</tr>
+			</table>
+			<INPUT type="button" value="Open" ID="Button1" NAME="Button1" onclick="OnButtonWMS();">
+			<script language=javascript>
+			document.getElementById('wms_title').value = 'Next Rad';
+			document.getElementById('wms_url').value = 'http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?';
+			document.getElementById('wms_layer').value = 'nexrad-n0r-900913-m35m';
+			document.getElementById('wms_bounds').value = '-122.519531,18.375379,-76.992188,50.415519';
+			function OnButtonWMS()
+			{
+				var title   = escape(document.getElementById('wms_title').value);
+				var url     = escape(document.getElementById('wms_url').value);
+				var layer   = escape(document.getElementById('wms_layer').value);
+				var bounds  = escape(document.getElementById('wms_bounds').value);
+				var control = escape(document.getElementById('wms_control').value);
+				var spawn = "index.htm?MODE=OPEN_WMS&TITLE=" + title + "&URL=" + url + "&LAYER=" + layer + "&SET_BOUNDS=" + bounds + "&SHOW_CONTROL=" + control;
+				window.open(spawn, "DemoWMS");
+				
+			}			
+			
+			</script>
+
+		</P>
+		
+		<P>
+			<strong>SAEON WMS Server Example</strong><br>
+			<table border=1>
+			<tr>
+			<td>Title:</td>
+			<td><INPUT id="saeon_title" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+			<td>URL:</td>
+			<td><INPUT id="saeon_url" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Layer:</td>
+				<td><INPUT id="saeon_layer" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Bounds:</td>
+				<td><INPUT id="saeon_bounds" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Show Control:</td>
+				<td>
+					<SELECT ID="saeon_control" NAME="Select1" style="WIDTH:100">
+					<OPTION value='show'>Show</OPTION>
+					<OPTION value='hide'>Hide</OPTION>
+					</SELECT>
+				</td>
+			</tr>
+			</table>
+			<INPUT type="button" value="Open" ID="Button4" NAME="Button1" onclick="OnButtonSAEON();">
+			<script language=javascript>
+			document.getElementById('saeon_title').value = 'SAEON WMS';
+			document.getElementById('saeon_url').value = 'http://196.213.187.52/geoserver/wms';
+			document.getElementById('saeon_layer').value = 'bgis:bmr_conservancies_basic_jun06';
+			document.getElementById('saeon_bounds').value = '22.681274,-34.663711,25.339966,-32.589635';
+			function OnButtonSAEON()
+			{
+				var title   = escape(document.getElementById('saeon_title').value);
+				var url     = escape(document.getElementById('saeon_url').value);
+				var layer   = escape(document.getElementById('saeon_layer').value);
+				var bounds  = escape(document.getElementById('saeon_bounds').value);
+				var control = escape(document.getElementById('saeon_control').value);
+				var spawn = "index.htm?MODE=OPEN_WMS&TITLE=" + title + "&URL=" + url + "&LAYER=" + layer + "&SET_BOUNDS=" + bounds + "&SHOW_CONTROL=" + control;
+				window.open(spawn, "DemoWMS");
+			}			
+			
+			</script>
+
+		</P>
+
+		<P>
+			<strong>TIP WMS Server Example</strong><br>
+			<table border=1>
+			<tr>
+			<td>Title:</td>
+			<td><INPUT id="tip_title" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+			<td>URL:</td>
+			<td><INPUT id="tip_url" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Layer:</td>
+				<td><INPUT id="tip_layer" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Bounds:</td>
+				<td><INPUT id="tip_bounds" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Show Control:</td>
+				<td>
+					<SELECT ID="tip_control" NAME="Select1" style="WIDTH:100">
+					<OPTION value='show'>Show</OPTION>
+					<OPTION value='hide'>Hide</OPTION>
+					</SELECT>
+				</td>
+			</tr>
+			</table>
+			<INPUT type="button" value="Open" ID="Button5" NAME="Button1" onclick="OnButtonTIP();">
+			<script language=javascript>
+			document.getElementById('tip_title').value = 'TIPS WMS';
+			document.getElementById('tip_url').value = 'http://146.64.101.6/ArcGIS/services/pop2007_meso/MapServer/WMSServer';
+			document.getElementById('tip_layer').value = '0,1,2';
+			document.getElementById('tip_bounds').value = '6.020508,-36.597889,48.55957,-18.062312';
+			function OnButtonTIP()
+			{
+				var title   = escape(document.getElementById('tip_title').value);
+				var url     = escape(document.getElementById('tip_url').value);
+				var layer   = escape(document.getElementById('tip_layer').value);
+				var bounds  = escape(document.getElementById('tip_bounds').value);
+				var control = escape(document.getElementById('tip_control').value);
+				var spawn = "index.htm?MODE=OPEN_WMS&TITLE=" + title + "&URL=" + url + "&LAYER=" + layer + "&SET_BOUNDS=" + bounds + "&SHOW_CONTROL=" + control;
+				window.open(spawn, "DemoWMS");
+			}			
+			
+			</script>
+
+		</P>
+		
+		
+		<P>
+			<strong>KML Example</strong><br>
+			<table border=1 ID="Table1">
+			<tr>
+			<td>Title:</td>
+			<td><INPUT id="kml_title" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+			<td>URL:</td>
+			<td><INPUT id="kml_url" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Bounds:</td>
+				<td><INPUT id="kml_bounds" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Show Control:</td>
+				<td>
+					<SELECT ID="kml_control" NAME="Select1" style="WIDTH:100">
+					<OPTION value='show'>Show</OPTION>
+					<OPTION value='hide'>Hide</OPTION>
+					</SELECT>
+				</td>
+			</tr>
+			
+			</table>
+			<INPUT type="button" value="Open" ID="Button2" NAME="Button1" onclick="OnButtonKML();">
+			<script language=javascript>
+			document.getElementById('kml_title').value = 'Gauteng';
+			document.getElementById('kml_url').value = 'http://www.swdev.co.za/saeon/layers/gauteng urban edge 2007 ver 5.kml';
+			document.getElementById('kml_bounds').value = '26.702271,-26.788525,29.443359,-25.429633';
+			function OnButtonKML()
+			{
+				var title = escape(document.getElementById('kml_title').value);
+				var url = escape(document.getElementById('kml_url').value);
+				var bounds  = escape(document.getElementById('kml_bounds').value);
+				var control = escape(document.getElementById('kml_control').value);
+				
+				var spawn = "index.htm?MODE=OPEN_KML&TITLE=" + title + "&URL=" + url + "&SET_BOUNDS=" + bounds + "&SHOW_CONTROL=" + control;
+				window.open(spawn, "DemoKML");
+				
+			}			
+			
+			</script>
+
+		</P>
+
+
+        <!-- Geo RSS -->
+		<P>
+			<strong>GeoRSS Example</strong><br>
+			<table border=1 ID="Table2">
+			<tr>
+			<td>Title:</td>
+			<td><INPUT id="rss_title" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+			<td>URL:</td>
+			<td><INPUT id="rss_url" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			
+			<tr>
+				<td>Bounds:</td>
+				<td><INPUT id="rss_bounds" name="Text1" style="WIDTH:700"></td>
+			</tr>
+			<tr>
+				<td>Show Control:</td>
+				<td>
+					<SELECT ID="rss_control" NAME="Select1" style="WIDTH:100">
+					<OPTION value='show'>Show</OPTION>
+					<OPTION value='hide'>Hide</OPTION>
+					</SELECT>
+				</td>
+			</tr>
+			
+			</table>
+			<INPUT type="button" value="Open" ID="Button3" NAME="Button1" onclick="OnButtonRSS();">
+			
+		<!-- Sensorweb -->
+		<P>
+			<strong>Sensorweb Example</strong><br>
+			<table border=1 ID="Table5">
+			<tr>
+			<td>Title:</td>
+			<td><INPUT id="sos_title" name="Text1" style="WIDTH:700" value="Sample Net CDF"></td>
+			</tr>
+			<tr>
+			<td>URL:</td>
+			<td><INPUT id="sos_url" name="Text1" style="WIDTH:700" value="http://www.saeonocean.co.za/SOS_SMALL/sos?"></td>
+			</tr>
+			
+			<tr>
+				<td>Bounds:</td>
+				<td><INPUT id="sos_bounds" name="Text1" style="WIDTH:700" value="-127.564231,-64.751751,193.412332,73.140172"></td>
+			</tr>
+			<tr>
+				<td>Show Control:</td>
+				<td>
+					<SELECT ID="sos_control" NAME="Select1" style="WIDTH:100">
+					<OPTION value='show'>Show</OPTION>
+					<OPTION value='hide'>Hide</OPTION>
+					</SELECT>
+				</td>
+			</tr>
+			
+			</table>
+			<INPUT type="button" value="Open" ID="Button7" NAME="Button1" onclick="OnButtonSOS();">
+            			
+			
+			
+		<!-- NetCDF -->
+		<P>
+			<strong>NetCDF Example</strong><br>
+			<table border=1 ID="Table4">
+			<tr>
+			<td>Title:</td>
+			<td><INPUT id="net_title" name="Text1" style="WIDTH:700" value="Sample Net CDF"></td>
+			</tr>
+			<tr>
+			<td>URL:</td>
+			<td><INPUT id="net_url" name="Text1" style="WIDTH:700" value="http://www.saeonocean.co.za/SOS_SMALL/sos?"></td>
+			</tr>
+			
+			<tr>
+				<td>Bounds:</td>
+				<td><INPUT id="net_bounds" name="Text1" style="WIDTH:700" value="4.608132,-38.608215,44.730202,-17.256149"></td>
+			</tr>
+			<tr>
+				<td>Show Control:</td>
+				<td>
+					<SELECT ID="net_control" NAME="Select1" style="WIDTH:100">
+					<OPTION value='show'>Show</OPTION>
+					<OPTION value='hide'>Hide</OPTION>
+					</SELECT>
+				</td>
+			</tr>
+			
+			</table>
+			<INPUT type="button" value="Open" ID="Button6" NAME="Button1" onclick="OnButtonNetCDF();">
+            			
+			
+			<script language=javascript>
+			document.getElementById('rss_title').value = 'Earth Quakes';
+			document.getElementById('rss_url').value = 'http://earthquake.usgs.gov/eqcenter/recenteqsww/catalogs/eqs7day-M2.5.xml';
+			document.getElementById('rss_bounds').value = '-102.832031,-56.704506,116.191406,66.618122';
+			function OnButtonRSS()
+			{
+				var title = escape(document.getElementById('rss_title').value);
+				var url = escape(document.getElementById('rss_url').value);
+				var bounds  = escape(document.getElementById('rss_bounds').value);
+				var control = escape(document.getElementById('rss_control').value);
+				
+				var spawn = "index.htm?MODE=OPEN_RSS&TITLE=" + title + "&URL=" + url + "&SET_BOUNDS=" + bounds + "&SHOW_CONTROL=" + control;
+				window.open(spawn, "DemoRSS");
+				
+			}			
+			
+			
+			function OnButtonSOS()
+			{
+				var title = escape(document.getElementById('sos_title').value);
+				var url = escape(document.getElementById('sos_url').value);
+				var bounds  = escape(document.getElementById('sos_bounds').value);
+				var control = escape(document.getElementById('sos_control').value);
+				
+				var spawn = "index.htm?MODE=OPEN_SOS&TITLE=" + title + "&URL=" + url + "&SET_BOUNDS=" + bounds + "&SHOW_CONTROL=" + control;
+				window.open(spawn, "Demo Sensorweb");
+				
+			}			
+			
+			
+			function OnButtonNetCDF()
+			{
+				var title = escape(document.getElementById('net_title').value);
+				var url = escape(document.getElementById('net_url').value);
+				var bounds  = escape(document.getElementById('net_bounds').value);
+				var control = escape(document.getElementById('net_control').value);
+				
+				var spawn = "index.htm?MODE=OPEN_NETCDF&TITLE=" + title + "&URL=" + url + "&SET_BOUNDS=" + bounds + "&SHOW_CONTROL=" + control;
+				window.open(spawn, "DemoNetCDF");
+				
+			}			
+			
+			
+			</script>
+
+		</P>
+        <input id="debug_box" type="text" />
+		
+	</body>
+</html>
+
+
+<source type="wms" url="http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi" layer="nexrad-n0r-900913-m35m" transparent="true" />
+<source type="kml" url="http://www.swdev.co.za/saeon/layers/gauteng urban edge 2007 ver 5.kml" />
+
+
+
+

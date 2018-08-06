@@ -1,0 +1,625 @@
+<html>
+<head>
+	<title>Advanced Mapping</title>
+	<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+	<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+	<link rel="SHORTCUT ICON" HREF="favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="ext/examples/shared/examples.css" />     
+	<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" /> 
+    <link rel="stylesheet" type="text/css" href="ext/examples/ux/css/statusbar.css" /> 
+    <link rel="stylesheet" type="text/css" href="ext/examples/ux/fileuploadfield/css/fileuploadfield.css"/> 
+
+    <!--<link rel="stylesheet" type="text/css" href="ext/resources/css/xtheme-human.css" id="theme">-->
+    <link rel="stylesheet" type="text/css" href="saeon.css" />
+	
+    
+
+    <!-- extJS -->
+    <script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="ext/ext-all.js"></script>
+    <script type="text/javascript" src="CheckColumn.js"></script>
+    <script src="ajax.js"></script> 
+	<script src="parsexml.js"></script> 
+	<script type="text/javascript" src="ClearDateField.js"></script>
+    <script type="text/javascript" src="ext/examples/ux/fileuploadfield/FileUploadField.js"></script> 
+    <script type="text/javascript" src="ext/examples/ux/Multiselect.js"></script> 
+	
+	    
+	<script type="text/javascript" src="ext/examples/form/states.js"></script>
+    <script type="text/javascript" src="ext/examples/ux/StatusBar.js"></script> 
+    <script type="text/javascript" src="SearchField.js"></script>
+    <script type="text/javascript" src="querystring.js"></script>
+    <!-- Open Layers -->
+    <script src="openlayers/OpenLayers.js"></script> 
+    <!-- extJS -->
+    <script src="openlayers/OpenLayers.js"></script> 	    
+    <script type="text/javascript" src="GeoExt/script/GeoExt.js"></script>
+    <script src="GeoRSS_Format.js"></script> 
+    
+	<!-- local scripts -->    
+	<script type="text/javascript" src="panel_add_layer.js"></script> 
+    <script type="text/javascript" src="panel_layers.js"></script> 
+    <script type="text/javascript" src="panel_capture.js"></script> 
+    
+    
+    <script type="text/javascript">
+    
+    // global variables
+    var pStatusBar = null;
+    var pPanelLat = null;
+    var pPanelLng = null;
+    var pTabPanel = null;
+    var pControlBar = null;
+
+	function MessageBox(cap, text) {
+	
+		Ext.Msg.alert(cap, text);
+	}    
+    
+    
+    function SetActiveTab(index) {
+		pTabPanel.setActiveTab(index);
+	}
+	
+	function DoShowInfo(caption, info) {
+		var infoDlg = null;
+
+		// create form
+		var f = new Ext.FormPanel({
+			labelWidth: 40,
+			frame: true,
+			buttonAlign: 'left',
+
+			items: [ 
+			{
+				id: 'edt_url',
+				xtype: 'textfield',
+				fieldLabel: caption,
+				name: 'cc_url',
+				value: info,
+				width: 400
+			}
+			],
+			buttons: [ {
+				text: 'OK',
+				minWidth: 75,
+				handler: function() {
+					infoDlg.close();
+				}
+					
+				}
+			]
+		});
+		
+		// create window    
+		infoDlg = new Ext.Window({
+			height: 120,
+			width: 480,
+			closable: true,
+			modal: true,
+			title: caption,
+			layout: 'fit',
+			items: f
+		});
+		
+		// show window
+		infoDlg.show();
+	}	
+	
+	function LoadSearchResults(url) {
+		pSearchTab = pTabPanel.getActiveTab();
+		
+		var myNewGrid = createPaneAddLayers("wms", url);
+		pTabPanel.add(myNewGrid); 
+		pTabPanel.setActiveTab(myNewGrid);
+		
+		
+//		debugger;
+		pTabPanel.remove(pSearchTab);
+		
+		
+	}
+	
+    
+    Ext.onReady(function(){
+    
+        // NOTE: This is an example showing simple state management. During development,
+        // it is generally best to disable state management as dynamically-generated ids
+        // can change across page loads, leading to unpredictable results.  The developer
+        // should ensure that stable state ids are set for stateful components in real apps.
+        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+        
+		var comboStore = new Ext.data.ArrayStore({
+			id: '0',
+			fields: ['value', 'text'],
+			data: [[1, 'Google Streets'], [2, 'Google Physical'], [3, 'Metacarta WMS']]
+		});
+        
+		var bkMapCombo = new Ext.form.ComboBox({
+					editable: false,
+					store: comboStore,
+					valueField: 'value',
+					displayField: 'text',
+					mode: 'local',
+					triggerAction: 'all'
+					});
+					
+		function OnMapBackgroundChanged() {
+			var mapFrame = window.frames['mapframe'];
+			mapFrame.SetBackgroundMap(bkMapCombo.getValue());
+		}
+		
+		bkMapCombo.addListener("select", OnMapBackgroundChanged);
+		
+		
+//		
+        
+		var propGrid = new Ext.grid.PropertyGrid(
+		{
+			title: 'General',
+			source: {
+				'Background map': 1
+			},
+			customEditors: {
+				'check': new Ext.grid.GridEditor(new Ext.form.Checkbox()),
+				'Background map': new Ext.grid.GridEditor(bkMapCombo, {}),
+				'date': new Ext.grid.GridEditor(new Ext.form.DateField(), {}) 
+			},
+			initComponent: function() {
+				this.constructor.prototype.initComponent.apply(this, arguments);
+				Ext.apply(this.getColumnModel(), {
+					renderCellDelegate: (function(val, meta, r, row, col) {
+					var editor = this.getCellEditor(col, row);
+					var cell = editor.field;
+					var xType = cell? cell.getXType ? cell.getXType() : null : null;
+				     
+					// console.info('row='+row+', col='+col+', xType=' + xType + ', val=' + val);
+					switch(xType) {
+					case 'combo':
+					var rec = cell.store.getById(val);
+					return rec.get(cell.displayField);
+					case 'colorfield':
+					//return 
+					//p.value = ''
+					//p.style += ' background-color: #' + rs[j].data.value || cell.curColor + ';';
+					break;
+					case 'checkbox':
+					default:
+					return this.constructor.prototype.renderCell.apply(this, arguments);
+					}
+					}).createDelegate(this.getColumnModel())
+				});
+			}
+		});        
+		
+	// This is a shared function that simulates a load action on a StatusBar.
+    // It is reused by most of the example panels.
+    var loadFn = function(btn, statusBar){
+        btn = Ext.getCmp(btn);
+        statusBar = Ext.getCmp(statusBar);
+
+        btn.disable();
+        statusBar.showBusy();
+
+        (function(){
+            statusBar.clearStatus({useDefaults:true});
+            btn.enable();
+        }).defer(2000);
+    };		
+		
+		// create map toolbar
+		mapTB = new Ext.Toolbar();
+	    
+		mapTB.add( 
+		{
+			id: 'btn_add',
+			text: 'Zoom in',
+			iconCls:'icon_zoom',
+			tooltip: '<b>Zoom in</b><br/>Zoom in to the map.',
+			handler: ZoomIn
+		} 
+
+		,
+		{
+			id: 'btn_zout',
+			text: 'Zoom out',
+			iconCls:'icon_zoom_out',
+			tooltip: '<b>Zoom out</b><br/>Zoom out.',
+			handler: ZoomOut
+		} ,
+		'-',
+		{
+			text: 'Print',
+			iconCls:'icon_printer',
+			tooltip: 'Print map',
+			handler: PrintMap
+		},
+		'-',
+		{
+			text: 'Get Bounds',
+			iconCls:'icon_get_bounds',
+			tooltip: 'Get Bounds',
+			handler: GetBounds
+		},
+		' ',' ',' ',' ',' ',' ',
+		{
+		    id: 'toolbar_info_box',
+            xtype: 'textfield',
+            value: 'info',
+            readOnly: true,
+            hidden: true,
+            width: 200
+		},
+		' ', ' ',
+		{
+		    id: 'toolbar_info_button',
+            xtype: 'button',
+            hidden: true,
+            text: 'Cancel',
+            handler: HideInfoToolbox
+		}
+ 	    );
+		
+		mapTB.doLayout();    
+
+        // create status bar
+		pStatusBar = new Ext.ux.StatusBar({
+			defaultText: '',
+			id: 'win-statusbar',
+			statusAlign: 'left', // the magic config
+			items: [
+			
+			'Lat:', 
+			new Ext.Panel({
+				id: 'll_lat',
+				width:90,
+				align: 'left',
+				html: '<div align=left>&nbsp;----</div>'
+			}),
+			'-', 
+			
+			'Lng:', 
+			new Ext.Panel({
+				id: 'll_lng',
+				width:90,
+				align: 'left',
+				html: '<div align=left>&nbsp;----</div>'
+			}),
+			' ']
+		});
+		
+		
+		
+//		pStatusBar.setStatus({
+//			text: 'Lat: 28.33444S, Long: 28.554433E'
+//		});
+		
+		
+		pTabPanel = new Ext.TabPanel({
+                title: 'Map',
+                
+                activeTab: 0,     // first tab initially active
+				border:true,
+				frame:false,
+				region: 'center', // a center region is ALWAYS required for border layout
+          
+                items: [{
+					tbar: mapTB,
+					bbar: pStatusBar,
+                    contentEl: 'center1',
+                    title: 'Map',
+                    closable: false,
+                    autoScroll: false
+                }]
+                ,
+                handler: loadFn.createCallback('win-statusbar')
+            });
+        
+        pTabPanel.on('tabchange', DoTabChange);
+        pTabPanel.setActiveTab(0);
+        
+        function DoTabChange() {
+			var mapFrame = window.frames['mapframe'];
+			if (mapFrame && mapFrame.map)
+				mapFrame.map.updateSize();
+        }
+
+        pControlBar = {
+//				title: 'Control',
+                region: 'west',
+                id: 'west-panel', // see Ext.getCmp() below
+                split: true,
+                width: 300,
+                minSize: 175,
+                maxSize: 400,
+                collapsible: true,
+                collapsed: 'false',
+                margins: '0 0 0 5',
+                layout: 'fit', // specify layout manager for items
+                items:            // this TabPanel is wrapped by another Panel so the title will be applied
+                new Ext.TabPanel({
+                    id: 'ctrlTab',
+                    border: false, // already wrapped so don't add another border
+                    activeTab: 0, // second tab initially active
+                    tabPosition: 'top',
+                    items: [ 
+						createPaneLayers()
+					]
+                    
+                })
+            };
+            
+   
+        var viewport = new Ext.Viewport({
+            layout: 'border',
+            items: [
+				pControlBar, pTabPanel
+            ]
+        });
+        
+        // get a reference to the HTML element with id "hideit" and add a click listener to it 
+        Ext.get("hideit").on('click', function(){
+            // get a reference to the Panel that was created with id = 'west-panel' 
+            var w = Ext.getCmp('west-panel');
+            // expand or collapse that Panel based on its collapsed property state
+            w.collapsed ? w.expand() : w.collapse();
+        });
+        
+		// see if control panel should be collapsed        
+		var qs = new Querystring();
+		var qControl = qs.get("SHOW_CONTROL", "show");
+		if (qControl == 'hide' || qControl == 'HIDE') {
+            var w = Ext.getCmp('west-panel');
+            w.collapse();
+		}
+		else {
+            var w = Ext.getCmp('west-panel');
+            w.expand();
+		}
+		
+
+		// AddLayer("wms", "Add WMS Layer");
+        
+        setTimeout('DoInit();', 100);
+    });
+
+	// init tool tips    
+    Ext.QuickTips.init();
+
+	// do search
+	function DoSearch() {
+		var myNewGrid = createPaneSearch(); ///createPaneAddLayers("wms");
+		pTabPanel.add(myNewGrid); 
+		pTabPanel.setActiveTab(myNewGrid);
+	}    
+	
+	function DoManProfiles() {
+	    DoManagementPanel('Manage Profiles', 'manProf', 'man_profiles.htm');
+	}
+	
+	function DoManCampaigns() {
+	    DoManagementPanel('Manage Campaigns', 'manCamp', 'man_campaigns.htm');
+	}
+	
+	function DoManagementPanel(csTitle, csID, csURL) {
+		var myNewGrid = createManagementTab(csTitle, csID, csURL); 
+		pTabPanel.add(myNewGrid); 
+		pTabPanel.setActiveTab(myNewGrid);
+	}
+
+	function DoFavourites() {
+		var myNewGrid = createPaneAddLayers("fav");
+		pTabPanel.add(myNewGrid); 
+		pTabPanel.setActiveTab(myNewGrid);
+	}    
+	
+   
+    // add layer
+    function AddLayer(csType, csDescription) {
+		var myNewGrid = createPaneAddLayers(csType);
+		pTabPanel.add(myNewGrid); 
+		pTabPanel.setActiveTab(myNewGrid);
+	}
+	
+	// set coordinates on status bar (called from mapframe.htm)
+	function SetStatusCoords(lat, lng) {
+		if (pStatusBar) {
+			Ext.getCmp('ll_lat').body.update('<div align=left>&nbsp;' + lat + '</div>');
+			Ext.getCmp('ll_lng').body.update('<div align=left>&nbsp;' + lng + '</div>');
+		}
+	}
+
+	function AddLayerList(title, layer) {
+		var mapFrame = window.frames['mapframe'];
+		mapFrame.DoAddLayer(layer);
+		ReloadLayerGrid();
+			
+	}
+	
+	function DoInit() {
+		var mapFrame = window.frames['mapframe'];
+		if (mapFrame == null || mapFrame.map == null || mapFrame.AddKML == null || mapFrame.gmap == null)
+		{	
+			setTimeout('DoInit();', 100);
+			return;
+		}
+		
+//		LoadSearchResults('DoSearch.asp?crap=1');
+//		return;
+		
+		var map = mapFrame.map;
+		var qs = new Querystring();
+		var qMode  = qs.get("MODE", "");
+		var qTitle = qs.get("TITLE", "");
+		var qURL   = qs.get("URL", "");
+		var qLayer = qs.get("LAYER", "");
+		var qBounds = qs.get("SET_BOUNDS", "");
+		
+		if (qMode == "CAPTURE")
+		{
+		    var nCampaignID = qs.get("CAMPAIGN", "");
+		    var nProfileID  = qs.get("PROFILE", "");
+		    var pane = createPaneCapture(map, nCampaignID, nProfileID);
+		    Ext.getCmp('ctrlTab').add(pane);
+		    Ext.getCmp('ctrlTab').setActiveTab(pane);
+		}
+		
+		
+		// set bounds
+		if (qBounds != "") {
+			var bbox = qBounds.split(",");
+			var bbounds = new OpenLayers.Bounds(bbox[0], bbox[1], bbox[2], bbox[3]);
+			map.zoomToExtent(bbounds);
+		}
+		
+		
+		// KML
+		if (qMode == "OPEN_KML") {
+				var url = qURL;
+				var layer_url = CreateURL(url);
+				var mapFrame = window.frames['mapframe'];
+				layer = mapFrame.AddKML(qTitle, layer_url);
+		}
+			
+				
+		// RSS	
+		if (qMode == "OPEN_RSS") {
+		    console.log('*** RSS ***');
+				var url = qURL;
+				var layer_url = CreateURL(url);
+				var mapFrame = window.frames['mapframe'];
+				layer = mapFrame.AddRSS(qTitle, layer_url);
+		}
+		
+		// SOS	
+		if (qMode == "OPEN_SOS") {
+		    console.log('*** SOS ***');
+				var url = qURL;
+				var layer_url = CreateURL(url);
+				var mapFrame = window.frames['mapframe'];
+				layer = mapFrame.AddSOS(qTitle, layer_url);
+		}
+		
+
+		// WMS
+		if (qMode == "OPEN_WMS") {
+			var mapFrame = window.frames['mapframe'];
+			layer = mapFrame.AddWMS(qTitle, qURL, qLayer, true);
+		}
+		
+		// WMC
+		if (qMode == "OPEN_WMC") {
+			LoadWMC(qURL);
+		}
+		
+		ReloadLayerGrid();
+		
+		// debug
+		// DoConnect(1, 77);
+		
+	}		
+	
+	function PrintMap() {
+		window.frames['mapframe'].focus(); 
+		window.frames['mapframe'].print(); 	
+	}
+	
+	function GetBounds() {
+		var map = window.frames['mapframe'].map;
+		var bbox = map.getExtent();
+		var bounds = bbox.toBBOX()
+		DoShowInfo('bounds', bounds);
+	}
+	
+	function DoZoom(nDir) {
+		var map = window.frames['mapframe'].map;
+		var zoom = map.getZoom();
+		if (map.isValidZoomLevel(zoom + nDir))
+			map.setCenter(map.getCenter(), zoom + nDir);
+	}
+	
+	
+	function ZoomIn() {
+		DoZoom(1);
+	}
+	
+	function ZoomOut() {
+		DoZoom(-1);
+	}
+	
+	var waitIndex = 0;
+	
+	function PushWait() {
+		if (waitIndex < 0)
+			waitIndex = 0;
+		waitIndex++;
+		pStatusBar.showBusy();
+	}
+
+	function PopWait() {
+		waitIndex--;
+		if (waitIndex <= 0) {
+			pStatusBar.clearStatus({useDefaults:true});
+			waitIndex = 0;
+		}
+	}
+	
+	var gpbtnid = null;
+	
+    function HideInfoToolbox() {
+        Ext.getCmp('toolbar_info_button').hide();
+        Ext.getCmp('toolbar_info_box').hide();
+        var mapFrame = window.frames['mapframe'];
+        mapFrame.DeActivateClickHandler();
+        if (gpbtnid) {
+            Ext.getCmp(gpbtnid).toggle(false);
+            gpbtnid = null;
+        }
+    }
+
+    function StartInfoToolbox(text, btnid) {
+        Ext.getCmp('toolbar_info_button').show(true);
+        Ext.getCmp('toolbar_info_box').show(true);
+        Ext.getCmp('toolbar_info_box').setValue(text);
+        if (gpbtnid)
+            Ext.getCmp(gpbtnid).toggle(false);
+        gpbtnid = btnid;
+        Ext.getCmp(gpbtnid).toggle(true);
+    }
+	
+    
+    </script>
+
+</head>
+<body>
+    <!-- use class="x-hide-display" to prevent a brief flicker of the content -->
+    <div id="west" class="x-hide-display">
+    </div>
+    <div id="center2" class="x-hide-display">
+        <a id="hideit" href="#">Toggle the west region</a>
+    </div>
+    <div id="center1" class="x-hide-display">
+        <iframe id="mapframe" name="mapframe" src="mapframe.htm" width=100% height=100% frameborder=0></iframe>
+    </div>
+    <div id="props-panel" class="x-hide-display" style="width:220px;height:200px;overflow:hidden;">
+
+    </div>
+    <div id="south" class="x-hide-display">
+    </div>
+    
+    <div id="tabs1"></div>
+    
+    <table width=100% height=100%>
+    <tr>
+    <td align=center valign=center height=600 style="FONT-FAMILY: Arial; COLOR: blue; FONT-SIZE: 10pt">Loading Frame<br><br><img src="images/waiting.gif"></td>
+    </tr>
+    </table>
+    <script language=javascript>
+	</script>
+    <div id="ss_form" style="position: absolute; left: 1px; top: -2000px; width: 500px; height: 300px; z-index: 1; " ></div>
+    <div id="uq_form" style="position: absolute; left: 1px; top: -2000px; width: 500px; height: 300px; z-index: 2; " ></div>
+    <div id="xx_body" style="position: absolute; left: 1px; top: -2000px; width: 500px; height: 300px; z-index: 3; " ></div>
+    <iframe id="doc-save-frame" width=800 height=600 frameborder=0 style="visibility:hidden" ></iframe>
+</body>
+</html>

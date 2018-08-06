@@ -1,0 +1,239 @@
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+  <head> 
+    <link rel="stylesheet" href="OpenLayers/theme/default/style.css" type="text/css" /> 
+    <link rel="stylesheet" href="style.css" type="text/css" /> 
+	<link rel="stylesheet" href="openlayers/theme/default/google.css" type="text/css" />     
+	<script src='http://maps.google.com/maps?file=api&v=2&key=ABQIAAAAnKulvxnb9_-nFVuS8fuTWhRTIUnG_T-jeQ5bRJoyv1xx4Q1iaRQFvWQ_u4PNJLspIy5-KemnTInoeg'></script> 
+    <style type="text/css"> 
+        #wmc {
+            width: 90%;
+            height: 300px;
+        }
+ 
+        /* avoid pink tiles */
+        .olImageLoadError {
+            background-color: transparent !important;
+        }
+    </style> 
+    <script src="OpenLayers/lib/Firebug/firebug.js"></script> 
+    <script src="OpenLayers/OpenLayers.js"></script> 
+    <script src="wmc_v3.js"></script> 
+	<script type="text/javascript"> 
+ 
+        // increase reload attempts 
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 2;
+        
+        var format = new OpenLayers.Format.WMC({'layerOptions': {buffer: 0}});
+        
+        var doc, context, map;
+        
+		function GetWMSURL(bounds) {
+			var bb = bounds;
+			bb.transform(map.getProjectionObject(), map.displayProjection); 
+			
+			var imageSize = this.getImageSize(); 
+			var newParams = {
+				'SRS': "EPSG:4326",
+				'BBOX': this.encodeBBOX ?  bb.toBBOX() : bb.toArray(),
+				'WIDTH': imageSize.w,
+				'HEIGHT': imageSize.h
+			};
+			var requestString = this.getFullRequestString(newParams);
+			
+			return requestString;
+		}	
+        
+        
+        function init() {
+			// map options
+			var options = {
+				units: "m",
+				maxResolution: 156543.0339,
+				projection : new OpenLayers.Projection("EPSG:900913"),
+				displayProjection: new OpenLayers.Projection("EPSG:4326"),
+				maxExtent: new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508),
+				controls: [
+					new OpenLayers.Control.Navigation(),
+					new OpenLayers.Control.PanZoomBar(),
+					new OpenLayers.Control.LayerSwitcher()
+				]
+			};	       
+			
+            map = new OpenLayers.Map("map", options);
+            
+			// add modus layer
+			gwms = new OpenLayers.Layer.WMS( 
+				"MODIS",
+				"http://wms.lizardtech.com/lizardtech/iserv/ows",
+				{
+					layers: 'MODIS',
+					exceptions: "application/vnd.ogc.se_xml"
+				},
+				{
+					tileSize: new OpenLayers.Size(256,256),
+					'getURL': GetWMSURL,
+					buffer: 1
+				} 
+			);
+			
+			gwms.options.getURL = GetWMSURL;
+			
+				
+			// add gap layer			
+			ggap = new OpenLayers.Layer.WMS( "GAP",
+				"http://41.0.12.131/render/render.asp?MAP=GAP",
+				{
+					layers: '3.3 Agro',
+					exceptions: "application/vnd.ogc.se_xml"
+				},
+				{
+					tileSize: new OpenLayers.Size(256, 256)
+				} 
+			);
+				
+			// google streets
+			gmap = new OpenLayers.Layer.Google(
+				"Google Streets", // the default
+				{ 
+					sphericalMercator: true,
+					wmcName: 'Google Streets'
+				}
+			);
+		    
+			// google physical
+			gphy = new OpenLayers.Layer.Google(
+				"Google Physical",
+				{ 
+					type: G_PHYSICAL_MAP, 
+					sphericalMercator: true,
+					wmcName: 'Google Physical'
+					
+				}
+			);
+		    
+			// google hybrid
+			ghyb = new OpenLayers.Layer.Google(
+				"Google Hybrid",
+				{
+					type: G_HYBRID_MAP,
+					sphericalMercator: true,
+					wmcName: 'Google Hybrid'
+				}
+			);
+		    
+			// google satelite
+			gsat = new OpenLayers.Layer.Google(
+				"Google Satellite",
+				{
+					type: G_SATELLITE_MAP,
+					sphericalMercator: true,
+					wmcName: 'Google Satellite'
+				}
+			);
+			
+			// add KML layer to map
+			function AddKML(name, url) {
+				layer = new OpenLayers.Layer.GML(name, url, 
+				{
+					projection: map.displayProjection,
+					format: OpenLayers.Format.KML, 
+					formatOptions: {
+					extractStyles: true, 
+					extractAttributes: true,
+					maxDepth: 2
+					}
+				});
+				return layer;
+			}
+			
+
+			// test kml layer			
+            var url = "layers/gauteng urban edge 2007 ver 5.kml";
+            var kml = AddKML("Test KML", url);
+			
+            map.addLayers([gmap, gphy, gsat, ghyb, gwms, ggap, kml]);
+            
+			// set map centre	
+			var clat = -28.468611;
+			var clng = 24.669167;
+			mc = new OpenLayers.LonLat(clng, clat);
+			mc.transform(map.displayProjection, map.projection); 
+			map.moveTo(mc, 4, null);
+//			SetMapCenterCoords(clat, clng);
+        };
+        
+        function readWMC(merge) {
+            var text = document.getElementById("wmc").value;
+            
+            if(merge) {
+//                try {
+					while (map.layers.length > 1)
+						map.removeLayer(map.layers[1]);
+                    map = format.read(text, {map: map});
+                    // find first visible layer
+                    var baseLayer = null;
+                    for (i=1; i<map.layers.length; i++)
+                    {
+						if (map.layers[i].baselayer == true)
+						{
+							baseLayer = map.layers[i];
+							break;
+						}
+					}
+				
+					// set new base layer
+					map.setBaseLayer(baseLayer);
+					
+					// remove root layer
+                    // map.removeLayer(map.layers[0]);
+                    
+    //            } catch(err) {
+  //                  document.getElementById("wmc").value = err;
+      //          }
+            } else {
+                map.destroy();
+                try {
+                    var jsonFormat = new OpenLayers.Format.JSON();
+                    var mapOptions = jsonFormat.read(OpenLayers.Util.getElement('mapOptions').value);
+                    map = format.read(text, {map: mapOptions});
+                    map.addControl(new OpenLayers.Control.LayerSwitcher());
+                } catch(err) {
+                    document.getElementById("wmc").value = err;
+                }
+            }
+        }
+        
+        function writeWMC(merge) {
+            try {
+                var text = format.write(map, { version: 'SAEON' });
+                document.getElementById("wmc").value = text;
+            } catch(err) {
+                document.getElementById("wmc").value = err;
+            }
+        }
+            
+    </script> 
+    </head> 
+    <body onload="init()"> 
+    <h1 id="title">WMC Example</h1> 
+ 
+    <div id="tags"> 
+    </div> 
+    <p id="shortdesc"> 
+           Shows parsing of Web Map Context documents.
+    </p> 
+    <div id="map" class="smallmap"></div> 
+        <button onclick="writeWMC();" ID="Button1">write</button><br /> 
+        <button onclick="readWMC();" ID="Button2">read as new map</button> with the following extra map options : <input type="text" id="mapOptions" value='{"div": "map", "allOverlays": true}' NAME="mapOptions"/><br /> 
+        <button onclick="readWMC(true);" ID="Button3">read and merge</button><br /> 
+        <button onclick="pasteWMC();" ID="Button4">try with another WMC document</button><br /> 
+        <textarea id="wmc" NAME="wmc">paste WMC doc here</textarea> 
+    <div id="docs"> 
+        This is an example of parsing WMC documents. <br /> 
+        The format class has a layerOptions property, which can be used
+        to control the default options of the layer when it is created
+        by the parser.
+    </div> 
+  </body> 
+</html> 
+ 

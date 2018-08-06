@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://demo.opengeo.org:80/geoserver/schemas/wms/1.1.1/WMS_MS_Capabilities.dtd">
+<WMT_MS_Capabilities version="1.0.0">
+<Service>
+  <Name>GetMap</Name>
+  <Title>South Africa Vector</Title>
+  <OnlineResource>https://196.35.94.243/cgi-bin/mapserv?map=ZA_VECTOR&amp;</OnlineResource>
+</Service>
+<Capability>
+  <Request>
+    <Map>
+      <Format><GIF /><PNG /><JPEG /><WBMP /><SVG /></Format>
+      <DCPType>
+        <HTTP>
+          <Get onlineResource="https://196.35.94.243/cgi-bin/mapserv?map=ZA_VECTOR&amp;" />
+
+          <Post onlineResource="https://196.35.94.243/cgi-bin/mapserv?map=ZA_VECTOR&amp;" />
+        </HTTP>
+      </DCPType>
+    </Map>
+    <Capabilities>
+      <Format><WMS_XML /></Format>
+      <DCPType>
+        <HTTP>
+          <Get onlineResource="https://196.35.94.243/cgi-bin/mapserv?map=ZA_VECTOR&amp;" />
+
+          <Post onlineResource="https://196.35.94.243/cgi-bin/mapserv?map=ZA_VECTOR&amp;" />
+        </HTTP>
+      </DCPType>
+    </Capabilities>
+    <FeatureInfo>
+      <Format><MIME /><GML.1 /></Format>
+      <DCPType>
+        <HTTP>
+          <Get onlineResource="https://196.35.94.243/cgi-bin/mapserv?map=ZA_VECTOR&amp;" />
+
+          <Post onlineResource="https://196.35.94.243/cgi-bin/mapserv?map=ZA_VECTOR&amp;" />
+        </HTTP>
+      </DCPType>
+    </FeatureInfo>
+  </Request>
+  <Exception>
+    <Format><BLANK /><INIMAGE /><WMS_XML /></Format>
+  </Exception>
+  <VendorSpecificCapabilities />
+
+  <Layer>
+    <Name>SouthAfricaVectors</Name>
+    <Title>South Africa Vector</Title>
+    <SRS>EPSG:4326</SRS>
+    <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
+    <BoundingBox SRS="EPSG:4326"
+                minx="-180" miny="-90" maxx="180" maxy="90" />
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer queryable="0">
+
+        <Name>country</Name>
+        <Title>country</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="16" miny="-35" maxx="33" maxy="-22" />
+    </Layer>
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer queryable="0">
+        <Name>RuralCadastrals</Name>
+
+        <Title>Rural Cadastrals</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="16" miny="-35" maxx="33" maxy="-22" />
+        <ScaleHint min="0.000498902848429637" max="4.98902848429637" />
+    </Layer>
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer queryable="0">
+        <Name>UrbanCadastrals</Name>
+
+        <Title>Urban Cadastrals</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="16" miny="-35" maxx="33" maxy="-22" />
+        <ScaleHint min="0.000498902848429637" max="4.98902848429637" />
+    </Layer>
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer queryable="0">
+        <Name>Highways_01</Name>
+
+        <Title>Highways</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="16" miny="-35" maxx="33" maxy="-22" />
+        <ScaleHint min="498.903347332486" max="4989.02848429637" />
+    </Layer>
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer queryable="0">
+        <Name>Highways_02</Name>
+
+        <Title>Highways</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="16" miny="-35" maxx="33" maxy="-22" />
+        <ScaleHint min="29.9346698086267" max="498.902848429637" />
+    </Layer>
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer queryable="0">
+        <Name>Highways_03</Name>
+
+        <Title>Highways</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="16" miny="-35" maxx="33" maxy="-22" />
+        <ScaleHint min="0.000498902848429637" max="29.9341709057782" />
+    </Layer>
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer queryable="0">
+        <Name>Roads</Name>
+
+        <Title>Roads</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="16" miny="-35" maxx="33" maxy="-22" />
+        <ScaleHint min="0.000498902848429637" max="4.98902848429637" />
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

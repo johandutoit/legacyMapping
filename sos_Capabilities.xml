@@ -1,0 +1,1949 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sos_Capabilities version="1.0.0" xsi_schemaLocation="http_//www.opengis.net/sos/1.0 http_//schemas.opengis.net/sos/1.0.0/sosAll.xsd" xmlns_sos="http_//www.opengis.net/sos/1.0" xmlns_xsi="http_//www.w3.org/2001/XMLSchema-instance" xmlns_ows="http_//www.opengis.net/ows/1.1" xmlns_xlink="http_//www.w3.org/1999/xlink" xmlns_ogc="http_//www.opengis.net/ogc" xmlns_gml="http_//www.opengis.net/gml">
+
+  <ows_ServiceIdentification>
+
+    <ows_Title>IFGI WeatherSOS</ows_Title>
+
+    <ows_Abstract>SOS for weather observations at IFGI, Muenster, Germany (SVN_ 9075 @ 2010-10-06 11_44_30)</ows_Abstract>
+
+    <ows_Keywords>
+
+      <ows_Keyword>temperature, humidity, wind speed, luminance, wind, wind direction, rain, pressure, weather</ows_Keyword>
+
+    </ows_Keywords>
+
+    <ows_ServiceType codeSpace="http_//opengeospatial.net">OGC_SOS</ows_ServiceType>
+
+    <ows_ServiceTypeVersion>1.0.0</ows_ServiceTypeVersion>
+
+    <ows_Fees>NONE</ows_Fees>
+
+    <ows_AccessConstraints>NONE</ows_AccessConstraints>
+
+  </ows_ServiceIdentification>
+
+  <ows_ServiceProvider>
+
+    <ows_ProviderName>52North</ows_ProviderName>
+
+    <ows_ProviderSite xlink_href="http_//52north.org/swe"/>
+
+    <ows_ServiceContact>
+
+      <ows_IndividualName>Daniel Nuest, Felix Bache</ows_IndividualName>
+
+      <ows_PositionName>Developer</ows_PositionName>
+
+      <ows_ContactInfo>
+
+        <ows_Phone>
+
+          <ows_Voice>+49(0)251/396 371-0</ows_Voice>
+
+        </ows_Phone>
+
+        <ows_Address>
+
+          <ows_DeliveryPoint>Marin-Luther-King-Weg 24</ows_DeliveryPoint>
+
+          <ows_City>Muenster</ows_City>
+
+          <ows_AdministrativeArea>North Rhine-Westphalia</ows_AdministrativeArea>
+
+          <ows_PostalCode>48155</ows_PostalCode>
+
+          <ows_Country>Germany</ows_Country>
+
+          <ows_ElectronicMailAddress>info@52north.org</ows_ElectronicMailAddress>
+
+        </ows_Address>
+
+      </ows_ContactInfo>
+
+      <ows_Role/>
+
+    </ows_ServiceContact>
+
+  </ows_ServiceProvider>
+
+  <ows_OperationsMetadata>
+
+    <ows_Operation name="GetCapabilities">
+
+      <ows_DCP>
+
+        <ows_HTTP>
+
+          <ows_Get xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos?"/>
+
+          <ows_Post xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos"/>
+
+        </ows_HTTP>
+
+      </ows_DCP>
+
+      <ows_Parameter name="updateSequence">
+
+        <ows_AnyValue/>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="AcceptVersions">
+
+        <ows_AllowedValues>
+
+          <ows_Value>1.0.0</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="Sections">
+
+        <ows_AllowedValues>
+
+          <ows_Value>ServiceIdentification</ows_Value>
+
+          <ows_Value>ServiceProvider</ows_Value>
+
+          <ows_Value>OperationsMetadata</ows_Value>
+
+          <ows_Value>Filter_Capabilities</ows_Value>
+
+          <ows_Value>Contents</ows_Value>
+
+          <ows_Value>All</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="AcceptFormats">
+
+        <ows_AllowedValues>
+
+          <ows_Value>text/xml</ows_Value>
+
+          <ows_Value>application/zip</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="GetObservation">
+
+      <ows_DCP>
+
+        <ows_HTTP>
+
+          <ows_Get xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos?"/>
+
+          <ows_Post xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos"/>
+
+        </ows_HTTP>
+
+      </ows_DCP>
+
+      <ows_Parameter name="srsName">
+
+        <ows_AnyValue/>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="offering">
+
+        <ows_AllowedValues>
+
+          <ows_Value>RAIN_GAUGE</ows_Value>
+
+          <ows_Value>LUMINANCE</ows_Value>
+
+          <ows_Value>HUMIDITY</ows_Value>
+
+          <ows_Value>ATMOSPHERIC_PRESSURE</ows_Value>
+
+          <ows_Value>ATMOSPHERIC_TEMPERATURE</ows_Value>
+
+          <ows_Value>WIND_SPEED</ows_Value>
+
+          <ows_Value>WIND_DIRECTION</ows_Value>
+
+          <ows_Value>VISIBILITY</ows_Value>
+
+          <ows_Value>WEATHER_CODE</ows_Value>
+
+          <ows_Value>voltage</ows_Value>
+
+          <ows_Value>electric_current</ows_Value>
+
+          <ows_Value>PatientCondition</ows_Value>
+
+          <ows_Value>TEMPERATURE</ows_Value>
+
+          <ows_Value>GAUGE_HEIGHT</ows_Value>
+
+          <ows_Value>phyto</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="eventTime">
+
+        <ows_AllowedValues>
+
+          <ows_Range>
+
+            <ows_MinimumValue>2008-02-14T11_03_02.000+01_00</ows_MinimumValue>
+
+            <ows_MaximumValue>2012-03-02T14_33_00.000+01_00</ows_MaximumValue>
+
+          </ows_Range>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="procedure">
+
+        <ows_AllowedValues>
+
+          <ows_Value>PowerEdgePress-Device0</ows_Value>
+
+          <ows_Value>lulong</ows_Value>
+
+          <ows_Value>patient_059345457</ows_Value>
+
+          <ows_Value>patient_A</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-1</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-3</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_ISE_SamplingCountingMethodPhyto01</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_kli_1</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="observedProperty">
+
+        <ows_AllowedValues>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__Precipitation1Hour</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__Precipitation1Hour</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__Luminance</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__Luminance</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__RelativeHumidity</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__RelativeHumidity</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__BarometricPressure</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__BarometricPressure</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__Temperature</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__Temperature</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__AirTemperature</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__WindSpeed</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__WindSpeed</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__WindDirection</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__WindDirection</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__visibilityRange</ows_Value>
+
+          <ows_Value>http_//booty.org.uk/booty.weather/metinfo/codes/Code_4680.htm</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_voltage</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_current</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_patientCondition</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_temperature</ows_Value>
+
+          <ows_Value>lulong_waterlevel</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_waterlevel1</ows_Value>
+
+          <ows_Value>urn_lsid_catalogueoflife.org_taxon_ecca8714-29c1-102b-9a4a-00304854f820_col20101221</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_biomass</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_density</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_depht</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="featureOfInterest">
+
+        <ows_AllowedValues>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_kli_1</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601</ows_Value>
+
+          <ows_Value>foi_1001</ows_Value>
+
+          <ows_Value>foi_2001</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="result">
+
+        <ows_AnyValue/>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="responseFormat">
+
+        <ows_AllowedValues>
+
+          <ows_Value>text/xml;subtype="om/1.0.0"</ows_Value>
+
+          <ows_Value>application/zip</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="resultModel">
+
+        <ows_AllowedValues>
+
+          <ows_Value>om_Observation</ows_Value>
+
+          <ows_Value>om_Measurement</ows_Value>
+
+          <ows_Value>om_CategoryObservation</ows_Value>
+
+          <ows_Value>om_SpatialObservation</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="responseMode">
+
+        <ows_AllowedValues>
+
+          <ows_Value>inline</ows_Value>
+
+          <ows_Value>resultTemplate</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="DescribeSensor">
+
+      <ows_DCP>
+
+        <ows_HTTP>
+
+          <ows_Get xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos?"/>
+
+          <ows_Post xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos"/>
+
+        </ows_HTTP>
+
+      </ows_DCP>
+
+      <ows_Parameter name="procedure">
+
+        <ows_AllowedValues>
+
+          <ows_Value>PowerEdgePress-Device0</ows_Value>
+
+          <ows_Value>lulong</ows_Value>
+
+          <ows_Value>patient_059345457</ows_Value>
+
+          <ows_Value>patient_A</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-1</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-3</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_ISE_SamplingCountingMethodPhyto01</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_kli_1</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="outputFormat">
+
+        <ows_AllowedValues>
+
+          <ows_Value>text/xml;subtype="sensorML/1.0.1"</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="GetFeatureOfInterest">
+
+      <ows_DCP>
+
+        <ows_HTTP>
+
+          <ows_Post xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos"/>
+
+        </ows_HTTP>
+
+      </ows_DCP>
+
+      <ows_Parameter name="featureOfInterestID">
+
+        <ows_AllowedValues>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_kli_1</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601</ows_Value>
+
+          <ows_Value>foi_1001</ows_Value>
+
+          <ows_Value>foi_2001</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="location">
+
+        <ows_AnyValue/>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="RegisterSensor">
+
+      <ows_DCP>
+
+        <ows_HTTP/>
+
+      </ows_DCP>
+
+      <ows_Parameter name="SensorDescription">
+
+        <ows_AllowedValues>
+
+          <ows_Value>sml_System</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="ObservationTemplate">
+
+        <ows_AllowedValues>
+
+          <ows_Value>om_Observation</ows_Value>
+
+          <ows_Value>om_Measurement</ows_Value>
+
+          <ows_Value>om_CategoryObservation</ows_Value>
+
+          <ows_Value>om_SpatialObservation</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="InsertObservation">
+
+      <ows_DCP>
+
+        <ows_HTTP>
+
+          <ows_Post xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos"/>
+
+        </ows_HTTP>
+
+      </ows_DCP>
+
+      <ows_Parameter name="AssignedSensorId">
+
+        <ows_AllowedValues>
+
+          <ows_Value>PowerEdgePress-Device0</ows_Value>
+
+          <ows_Value>lulong</ows_Value>
+
+          <ows_Value>patient_059345457</ows_Value>
+
+          <ows_Value>patient_A</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-1</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-3</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_ISE_SamplingCountingMethodPhyto01</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_kli_1</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="Observation">
+
+        <ows_AllowedValues>
+
+          <ows_Value>om_Observation</ows_Value>
+
+          <ows_Value>om_Measurement</ows_Value>
+
+          <ows_Value>om_CategoryObservation</ows_Value>
+
+          <ows_Value>om_SpatialObservation</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="GetFeatureOfInterestTime">
+
+      <ows_DCP>
+
+        <ows_HTTP>
+
+          <ows_Post xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos"/>
+
+        </ows_HTTP>
+
+      </ows_DCP>
+
+      <ows_Parameter name="featureOfInterestID">
+
+        <ows_AllowedValues>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_kli_1</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601</ows_Value>
+
+          <ows_Value>foi_1001</ows_Value>
+
+          <ows_Value>foi_2001</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="location">
+
+        <ows_AnyValue/>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="procedure">
+
+        <ows_AllowedValues>
+
+          <ows_Value>PowerEdgePress-Device0</ows_Value>
+
+          <ows_Value>lulong</ows_Value>
+
+          <ows_Value>patient_059345457</ows_Value>
+
+          <ows_Value>patient_A</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-1</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-3</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_Sensor_ISE_SamplingCountingMethodPhyto01</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_kli_1</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="observedProperty">
+
+        <ows_AllowedValues>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__Precipitation1Hour</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__Precipitation1Hour</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__Luminance</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__Luminance</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__RelativeHumidity</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__RelativeHumidity</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__BarometricPressure</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__BarometricPressure</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__Temperature</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__Temperature</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__AirTemperature</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__WindSpeed</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__WindSpeed</ows_Value>
+
+          <ows_Value>urn_x-ogc_def_property_OGC__WindDirection</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__WindDirection</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC__visibilityRange</ows_Value>
+
+          <ows_Value>http_//booty.org.uk/booty.weather/metinfo/codes/Code_4680.htm</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_voltage</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_current</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_patientCondition</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_temperature</ows_Value>
+
+          <ows_Value>lulong_waterlevel</ows_Value>
+
+          <ows_Value>urn_ogc_def_phenomenon_OGC_1.0.30_waterlevel1</ows_Value>
+
+          <ows_Value>urn_lsid_catalogueoflife.org_taxon_ecca8714-29c1-102b-9a4a-00304854f820_col20101221</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_biomass</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_density</ows_Value>
+
+          <ows_Value>urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_depht</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="GetObservationById">
+
+      <ows_DCP>
+
+        <ows_HTTP>
+
+          <ows_Post xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos"/>
+
+        </ows_HTTP>
+
+      </ows_DCP>
+
+      <ows_Parameter name="ObservationId">
+
+        <ows_AllowedValues>
+
+          <ows_Range>
+
+            <ows_MinimumValue>1</ows_MinimumValue>
+
+            <ows_MinimumValue>6181919</ows_MinimumValue>
+
+          </ows_Range>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="srsName">
+
+        <ows_AnyValue/>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="responseFormat">
+
+        <ows_AllowedValues>
+
+          <ows_Value>text/xml;subtype="om/1.0.0"</ows_Value>
+
+          <ows_Value>application/zip</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="resultModel">
+
+        <ows_AllowedValues>
+
+          <ows_Value>om_Observation</ows_Value>
+
+          <ows_Value>om_Measurement</ows_Value>
+
+          <ows_Value>om_CategoryObservation</ows_Value>
+
+          <ows_Value>om_SpatialObservation</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="responseMode">
+
+        <ows_AllowedValues>
+
+          <ows_Value>inline</ows_Value>
+
+          <ows_Value>resultTemplate</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="GetResult">
+
+      <ows_DCP>
+
+        <ows_HTTP>
+
+          <ows_Post xlink_href="http_//v-swe.uni-muenster.de_8080/WeatherSOS/sos"/>
+
+        </ows_HTTP>
+
+      </ows_DCP>
+
+      <ows_Parameter name="ObservationTemplateId">
+
+        <ows_AnyValue/>
+
+      </ows_Parameter>
+
+      <ows_Parameter name="eventTime">
+
+        <ows_AllowedValues>
+
+          <ows_Range>
+
+            <ows_MinimumValue>2008-02-14T11_03_02.000+01_00</ows_MinimumValue>
+
+            <ows_MaximumValue>2012-03-02T14_33_00.000+01_00</ows_MaximumValue>
+
+          </ows_Range>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Operation name="DescribeFeatureOfInterest">
+
+      <ows_DCP>
+
+        <ows_HTTP/>
+
+      </ows_DCP>
+
+      <ows_Parameter name="FeatureId">
+
+        <ows_AllowedValues>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_kli_1</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4</ows_Value>
+
+          <ows_Value>urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601</ows_Value>
+
+          <ows_Value>foi_1001</ows_Value>
+
+          <ows_Value>foi_2001</ows_Value>
+
+        </ows_AllowedValues>
+
+      </ows_Parameter>
+
+    </ows_Operation>
+
+    <ows_Parameter name="service">
+
+      <ows_AllowedValues>
+
+        <ows_Value>SOS</ows_Value>
+
+      </ows_AllowedValues>
+
+    </ows_Parameter>
+
+    <ows_Parameter name="version">
+
+      <ows_AllowedValues>
+
+        <ows_Value>1.0.0</ows_Value>
+
+      </ows_AllowedValues>
+
+    </ows_Parameter>
+
+  </ows_OperationsMetadata>
+
+  <sos_Filter_Capabilities>
+
+    <ogc_Spatial_Capabilities>
+
+      <ogc_GeometryOperands>
+
+        <ogc_GeometryOperand>gml_Envelope</ogc_GeometryOperand>
+
+        <ogc_GeometryOperand>gml_Point</ogc_GeometryOperand>
+
+        <ogc_GeometryOperand>gml_LineString</ogc_GeometryOperand>
+
+        <ogc_GeometryOperand>gml_Polygon</ogc_GeometryOperand>
+
+      </ogc_GeometryOperands>
+
+      <ogc_SpatialOperators>
+
+        <ogc_SpatialOperator name="BBOX">
+
+          <ogc_GeometryOperands>
+
+            <ogc_GeometryOperand>gml_Envelope</ogc_GeometryOperand>
+
+          </ogc_GeometryOperands>
+
+        </ogc_SpatialOperator>
+
+        <ogc_SpatialOperator name="Contains">
+
+          <ogc_GeometryOperands>
+
+            <ogc_GeometryOperand>gml_Point</ogc_GeometryOperand>
+
+            <ogc_GeometryOperand>gml_LineString</ogc_GeometryOperand>
+
+            <ogc_GeometryOperand>gml_Polygon</ogc_GeometryOperand>
+
+          </ogc_GeometryOperands>
+
+        </ogc_SpatialOperator>
+
+        <ogc_SpatialOperator name="Intersects">
+
+          <ogc_GeometryOperands>
+
+            <ogc_GeometryOperand>gml_Point</ogc_GeometryOperand>
+
+            <ogc_GeometryOperand>gml_LineString</ogc_GeometryOperand>
+
+            <ogc_GeometryOperand>gml_Polygon</ogc_GeometryOperand>
+
+          </ogc_GeometryOperands>
+
+        </ogc_SpatialOperator>
+
+        <ogc_SpatialOperator name="Overlaps">
+
+          <ogc_GeometryOperands>
+
+            <ogc_GeometryOperand>gml_Point</ogc_GeometryOperand>
+
+            <ogc_GeometryOperand>gml_LineString</ogc_GeometryOperand>
+
+            <ogc_GeometryOperand>gml_Polygon</ogc_GeometryOperand>
+
+          </ogc_GeometryOperands>
+
+        </ogc_SpatialOperator>
+
+      </ogc_SpatialOperators>
+
+    </ogc_Spatial_Capabilities>
+
+    <ogc_Temporal_Capabilities>
+
+      <ogc_TemporalOperands>
+
+        <ogc_TemporalOperand>gml_TimePeriod</ogc_TemporalOperand>
+
+        <ogc_TemporalOperand>gml_TimeInstant</ogc_TemporalOperand>
+
+      </ogc_TemporalOperands>
+
+      <ogc_TemporalOperators>
+
+        <ogc_TemporalOperator name="TM_During">
+
+          <ogc_TemporalOperands>
+
+            <ogc_TemporalOperand>gml_TimePeriod</ogc_TemporalOperand>
+
+          </ogc_TemporalOperands>
+
+        </ogc_TemporalOperator>
+
+        <ogc_TemporalOperator name="TM_Equals">
+
+          <ogc_TemporalOperands>
+
+            <ogc_TemporalOperand>gml_TimeInstant</ogc_TemporalOperand>
+
+          </ogc_TemporalOperands>
+
+        </ogc_TemporalOperator>
+
+        <ogc_TemporalOperator name="TM_After">
+
+          <ogc_TemporalOperands>
+
+            <ogc_TemporalOperand>gml_TimeInstant</ogc_TemporalOperand>
+
+          </ogc_TemporalOperands>
+
+        </ogc_TemporalOperator>
+
+        <ogc_TemporalOperator name="TM_Before">
+
+          <ogc_TemporalOperands>
+
+            <ogc_TemporalOperand>gml_TimeInstant</ogc_TemporalOperand>
+
+          </ogc_TemporalOperands>
+
+        </ogc_TemporalOperator>
+
+      </ogc_TemporalOperators>
+
+    </ogc_Temporal_Capabilities>
+
+    <ogc_Scalar_Capabilities>
+
+      <ogc_ComparisonOperators>
+
+        <ogc_ComparisonOperator>Between</ogc_ComparisonOperator>
+
+        <ogc_ComparisonOperator>EqualTo</ogc_ComparisonOperator>
+
+        <ogc_ComparisonOperator>NotEqualTo</ogc_ComparisonOperator>
+
+        <ogc_ComparisonOperator>LessThan</ogc_ComparisonOperator>
+
+        <ogc_ComparisonOperator>LessThanEqualTo</ogc_ComparisonOperator>
+
+        <ogc_ComparisonOperator>GreaterThan</ogc_ComparisonOperator>
+
+        <ogc_ComparisonOperator>GreaterThanEqualTo</ogc_ComparisonOperator>
+
+        <ogc_ComparisonOperator>Like</ogc_ComparisonOperator>
+
+      </ogc_ComparisonOperators>
+
+    </ogc_Scalar_Capabilities>
+
+    <ogc_Id_Capabilities>
+
+      <ogc_FID/>
+
+      <ogc_EID/>
+
+    </ogc_Id_Capabilities>
+
+  </sos_Filter_Capabilities>
+
+  <sos_Contents>
+
+    <sos_ObservationOfferingList>
+
+      <sos_ObservationOffering gml_id="RAIN_GAUGE">
+
+        <gml_name>Rain</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>46.611644 7.6103</gml_lowerCorner>
+
+            <gml_upperCorner>51.9412 13.883498</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-11-20T15_35_22.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2012-03-02T14_33_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_observedProperty xlink_href="urn_x-ogc_def_property_OGC__Precipitation1Hour"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC__Precipitation1Hour"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="LUMINANCE">
+
+        <gml_name>Luminance</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>46.611644 7.6103</gml_lowerCorner>
+
+            <gml_upperCorner>51.9412 13.883498</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-11-20T15_20_22.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2012-03-02T14_33_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC__Luminance"/>
+
+        <sos_observedProperty xlink_href="urn_x-ogc_def_property_OGC__Luminance"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="HUMIDITY">
+
+        <gml_name>Humidity of the atmosphere</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>46.611644 7.6103</gml_lowerCorner>
+
+            <gml_upperCorner>51.9412 13.883498</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-02-14T11_03_02.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2012-03-02T14_33_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_kli_1"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC__RelativeHumidity"/>
+
+        <sos_observedProperty xlink_href="urn_x-ogc_def_property_OGC__RelativeHumidity"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="ATMOSPHERIC_PRESSURE">
+
+        <gml_name>Pressure of the atmosphere</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>46.611644 7.6103</gml_lowerCorner>
+
+            <gml_upperCorner>51.9412 13.883498</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-12-20T02_29_27.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2012-03-02T14_33_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_kli_1"/>
+
+        <sos_observedProperty xlink_href="urn_x-ogc_def_property_OGC__BarometricPressure"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC__BarometricPressure"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="ATMOSPHERIC_TEMPERATURE">
+
+        <gml_name>Temperature of the atmosphere</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>46.611644 7.6103</gml_lowerCorner>
+
+            <gml_upperCorner>51.9412 13.883498</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-11-20T15_20_22.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2012-03-02T14_33_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_kli_1"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC__Temperature"/>
+
+        <sos_observedProperty xlink_href="urn_x-ogc_def_property_OGC__Temperature"/>
+
+        <sos_observedProperty xlink_href="urn_x-ogc_def_property_OGC__AirTemperature"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="WIND_SPEED">
+
+        <gml_name>Speed of the wind</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>46.611644 4.5</gml_lowerCorner>
+
+            <gml_upperCorner>52.0 13.883498</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-11-20T15_20_22.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2012-03-02T14_33_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_kli_1"/>
+
+        <sos_observedProperty xlink_href="urn_x-ogc_def_property_OGC__WindSpeed"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC__WindSpeed"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="WIND_DIRECTION">
+
+        <gml_name>Direction of the wind</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>46.611644 7.6103</gml_lowerCorner>
+
+            <gml_upperCorner>51.9412 13.883498</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-11-20T15_20_22.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2012-03-02T14_33_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_2f673b97-c7ce-48df-b2d2-10b4ecf0cf85"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_302ab595-5840-41b1-a11b-a0cb14fc3df4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_33df75fe-1f7c-4ed3-8062-01d49a134257"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_4fdde076-8080-43b0-9efa-4e3efd4fcc8e"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_55f02637-e61f-41f4-b1d3-452816197ee5"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_75e85e64-2d9f-48a9-90c6-8f0008c74ff4"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b3f0384c-6aa8-48e5-9dda-d537029b7a95"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_b4b9d260-f238-456a-b5cb-ca9dc0564601"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_kli_1"/>
+
+        <sos_observedProperty xlink_href="urn_x-ogc_def_property_OGC__WindDirection"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC__WindDirection"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93"/>
+
+        <sos_featureOfInterest xlink_href="urn_ogc_object_feature_OSIRIS-HWS_efeb807b-bd24-4128-a920-f6729bcdd111"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="VISIBILITY">
+
+        <gml_name>Visibility range in the atmosphere</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope>
+
+            <gml_lowerCorner/>
+
+            <gml_upperCorner/>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2011-01-01T11_20_00.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2011-01-01T11_20_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_kli_1"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC__visibilityRange"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="WEATHER_CODE">
+
+        <gml_name>WMO 4680 weather code</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope>
+
+            <gml_lowerCorner/>
+
+            <gml_upperCorner/>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2011-01-01T11_20_00.000+01_00</gml_beginPosition>
+
+            <gml_endPosition>2011-01-01T11_20_00.000+01_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_kli_1"/>
+
+        <sos_observedProperty xlink_href="http_//booty.org.uk/booty.weather/metinfo/codes/Code_4680.htm"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="voltage">
+
+        <gml_name>voltage in Device0</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope>
+
+            <gml_lowerCorner/>
+
+            <gml_upperCorner/>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time/>
+
+        <sos_procedure xlink_href="PowerEdgePress-Device0"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_phenomenon_OGC_1.0.30_voltage"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_CategoryObservation</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+
+      <sos_ObservationOffering gml_id="electric_current">
+
+        <gml_name>electric current in Deviceo</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope>
+
+            <gml_lowerCorner/>
+
+            <gml_upperCorner/>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time/>
+
+        <sos_procedure xlink_href="PowerEdgePress-Device0"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_phenomenon_OGC_1.0.30_current"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_CategoryObservation</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="PatientCondition">
+
+        <gml_name>Condition of patient</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>51.7167 8.76667</gml_lowerCorner>
+
+            <gml_upperCorner>51.7167 8.76667</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-04-02T17_44_15.000+02_00</gml_beginPosition>
+
+            <gml_endPosition>2008-04-02T17_44_15.000+02_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="patient_059345457"/>
+
+        <sos_procedure xlink_href="patient_A"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_phenomenon_OGC_1.0.30_patientCondition"/>
+
+        <sos_featureOfInterest xlink_href="foi_2001"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_CategoryObservation</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="TEMPERATURE">
+
+        <gml_name>Weather in Muenster</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope>
+
+            <gml_lowerCorner/>
+
+            <gml_upperCorner/>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-3"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_phenomenon_OGC_1.0.30_temperature"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="GAUGE_HEIGHT">
+
+        <gml_name>gauge height in Muenster</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope srsName="urn_ogc_def_crs_EPSG_4326">
+
+            <gml_lowerCorner>121.4688 31.2409</gml_lowerCorner>
+
+            <gml_upperCorner>121.4688 31.2409</gml_upperCorner>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time>
+
+          <gml_TimePeriod xsi_type="gml_TimePeriodType">
+
+            <gml_beginPosition>2008-04-01T19_44_15.000+02_00</gml_beginPosition>
+
+            <gml_endPosition>2008-04-01T19_44_15.000+02_00</gml_endPosition>
+
+          </gml_TimePeriod>
+
+        </sos_time>
+
+        <sos_procedure xlink_href="lulong"/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_Sensor_IFGI_ifgi-sensor-1"/>
+
+        <sos_observedProperty xlink_href="lulong_waterlevel"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_phenomenon_OGC_1.0.30_waterlevel1"/>
+
+        <sos_featureOfInterest xlink_href="foi_1001"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+      <sos_ObservationOffering gml_id="phyto">
+
+        <gml_name>Phytoplankton</gml_name>
+
+        <gml_boundedBy>
+
+          <gml_Envelope>
+
+            <gml_lowerCorner/>
+
+            <gml_upperCorner/>
+
+          </gml_Envelope>
+
+        </gml_boundedBy>
+
+        <sos_time/>
+
+        <sos_procedure xlink_href="urn_ogc_object_feature_Sensor_ISE_SamplingCountingMethodPhyto01"/>
+
+        <sos_observedProperty xlink_href="urn_lsid_catalogueoflife.org_taxon_ecca8714-29c1-102b-9a4a-00304854f820_col20101221"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_biomass"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_density"/>
+
+        <sos_observedProperty xlink_href="urn_ogc_def_property_OGC_1.0.30_aphanizomenon_flos-aquae_depht"/>
+
+        <sos_responseFormat>text/xml;subtype="om/1.0.0"</sos_responseFormat>
+
+        <sos_responseFormat>application/zip</sos_responseFormat>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Measurement</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_Observation</sos_resultModel>
+
+        <sos_resultModel xmlns_ns="http_//www.opengis.net/om/1.0">ns_CategoryObservation</sos_resultModel>
+
+        <sos_responseMode>inline</sos_responseMode>
+
+        <sos_responseMode>resultTemplate</sos_responseMode>
+
+      </sos_ObservationOffering>
+
+    </sos_ObservationOfferingList>
+
+  </sos_Contents>
+
+</sos_Capabilities>
